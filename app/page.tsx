@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 export default function ProductPage() {
   const [products, setProducts] = useState<any[]>([]);
+  const [search, setSearch] = useState("");
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -25,6 +26,11 @@ export default function ProductPage() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+
+    if (!form.name || !form.price) {
+      alert("Name and Price required!");
+      return;
+    }
 
     if (editingIndex !== null) {
       const updated = [...products];
@@ -49,8 +55,8 @@ export default function ProductPage() {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">Product Manager</h1>
+    <div className="p-6 max-w-4xl mx-auto bg-gray-50 min-h-screen">
+      <h1 className="text-3xl font-bold mb-6 text-center">Product Manager</h1>
 
       {/* FORM */}
       <form onSubmit={handleSubmit} className="space-y-3 mb-6">
@@ -86,10 +92,16 @@ export default function ProductPage() {
         </button>
       </form>
 
+      <input
+  placeholder="Search products..."
+  className="border p-2 mb-4 w-full"
+  onChange={(e) => setSearch(e.target.value)}
+/>
+
       {/* PRODUCT LIST */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {products.map((p, index) => (
-          <div key={index} className="border p-4 rounded shadow">
+          <div key={index} className="border p-4 rounded shadow hover:shadow-lg transition">
             {p.image && (
               <img src={p.image} className="h-40 w-full object-cover mb-2" />
             )}
